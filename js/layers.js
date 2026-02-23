@@ -86,7 +86,7 @@ addLayer("R", {
                 let exp = 0.3; 
                 if (hasUpgrade('R', 33)) exp += 0.05;
                 if (hasUpgrade('R', 52)) exp += 0.05;
-                return player.points.add(1).pow(exp);
+                return player.R.points.add(1).pow(exp);
             },
             description() { 
                 let exp = 0.3;
