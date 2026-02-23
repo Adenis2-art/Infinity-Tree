@@ -151,7 +151,7 @@ addLayer("R", {
             },
             effect(x) { return Decimal.pow(2, x) },
             unlocked() { return hasUpgrade('R', 31) },
-            purchaseLimit: new Decimal(10),
+            purchaseLimit: new Decimal(12),
         },
         12: {
             title: "Rebirth Core",
@@ -169,7 +169,7 @@ addLayer("R", {
             },
             effect(x) { return Decimal.pow(2.5, x) },
             unlocked() { return hasUpgrade('R', 32) },
-            purchaseLimit: new Decimal(10),
+            purchaseLimit: new Decimal(12),
         },
         13: {
             title: "Point Doubler",
@@ -187,7 +187,7 @@ addLayer("R", {
             },
             effect(x) { return Decimal.pow(2, x) },
             unlocked() { return hasUpgrade('R', 44) },
-            purchaseLimit: new Decimal(5),
+            purchaseLimit: new Decimal(10),
         },
         14: {
             title: "The Power!",
