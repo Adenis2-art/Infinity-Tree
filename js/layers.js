@@ -205,7 +205,7 @@ addLayer("R", {
             },
             effect(x) { return Decimal.pow(3, x) },
             unlocked() { return hasMilestone('R', 0) },
-            purchaseLimit: new Decimal(5),
+            purchaseLimit: new Decimal(10),
         },
     },
     layerShown() { return true }
