@@ -430,19 +430,12 @@ addLayer("P", {
             canComplete() { return player.R && player.R.points.gte(1e4) },
             rewardDescription: "RP x250",
             unlocked() {
-                // Якщо апгрейд є, або якщо ми вже зафіксували розблокування раніше
-                if (hasUpgrade("R", 81)) player.P.challenges[12] = Math.max(player.P.challenges[12] || 0, 0); 
-                
-                // Специфічний хак для TMT: перевіряємо, чи був апгрейд куплений хоча б раз
-                // Використовуємо внутрішню змінну шару, щоб "запам'ятати" стан без втручання в startData
-                if (hasUpgrade("R", 81)) this.permanentlyUnlocked = true;
-
-                return this.permanentlyUnlocked || hasChallenge("P", 12);
+                return hasUpgrade("R", 81) || inChallenge("P", 12) || hasChallenge("P", 12);
             },
             onEnter() {
                 layerDataReset("R", []);
                 player.points = new Decimal(0);
-            },
+            }
         },
         13: {
             name: "Third Number",
@@ -451,15 +444,13 @@ addLayer("P", {
             canComplete() { return player.points.gte(5e13) },
             rewardDescription: "Points x10,000",
             unlocked() {
-                // Фіксуємо розблокування в об'єкті
-                if (hasUpgrade("R", 83)) this.permanentlyUnlocked = true;
-
-                return this.permanentlyUnlocked || hasChallenge("P", 13);
+                // Аналогічна логіка для 13-го челенджу
+                return hasUpgrade("R", 83) || inChallenge("P", 13) || hasChallenge("P", 13);
             },
             onEnter() {
                 layerDataReset("R", []);
                 player.points = new Decimal(0);
-            },
+            }
         },
     layerShown() { return hasUpgrade('R', 41) || (player.P && player.P.unlocked) }
 });
