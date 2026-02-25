@@ -434,7 +434,6 @@ addLayer("P", {
             onEnter() { 
                 // Запам'ятовуємо, чи є апгрейди перед скиданням
                 let has81 = hasUpgrade("R", 81);
-                let has83 = hasUpgrade("R", 83);
                 
                 layerDataReset("R", []); 
                 player.points = new Decimal(0);
@@ -458,7 +457,8 @@ addLayer("P", {
                 layerDataReset("R", []); 
                 player.points = new Decimal(0);
                 
-                if (has81) player.R.upgrades.push(81);
+                // ПОМИЛКА ТУТ: has81 не визначено в цій функції!
+                if (has81) player.R.upgrades.push(81); 
                 if (has83) player.R.upgrades.push(83);
             },
         },
