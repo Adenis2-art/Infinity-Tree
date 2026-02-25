@@ -522,11 +522,5 @@ addLayer("M", {
         },
     },
     
-    layerShown() { 
-        let canSee = player.M.unlocked || 
-                     hasUpgrade('R', 74) || 
-                     (player.P && player.P.points.gte(7));
-        
-        return canSee;
-    }
+    layerShown() { return hasUpgrade('R', 84) || (player.M && player.M.unlocked) }
 });
