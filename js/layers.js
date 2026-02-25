@@ -27,6 +27,7 @@ function getPointGen() {
 
     // Mega Upgrades
     if (player.M && hasUpgrade('M', 11)) gain = gain.times(upgradeEffect('M', 11).point);
+    gain = gain.times(Decimal.pow(5, player.M.points));
 
     // Rebirth Buyables
     if (hasUpgrade('R', 31)) gain = gain.times(buyableEffect('R', 11)); 
