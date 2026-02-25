@@ -429,13 +429,18 @@ addLayer("P", {
             goalDescription: "Get 10,000 Rebirth Points",
             canComplete() { return player.R && player.R.points.gte(1e4) },
             rewardDescription: "RP x250",
-            unlocked() {
-                return hasUpgrade("R", 81) || inChallenge("P", 12) || hasChallenge("P", 12);
+            unlocked() { 
+                // Якщо гравець купив апгрейд, заходив у челендж або пройшов його
+                // ми створюємо "вічну" властивість прямо в цьому об'єкті
+                if (hasUpgrade("R", 81) || inChallenge("P", 12) || hasChallenge("P", 12)) {
+                    this.forceShow = true; 
+                }
+                return this.forceShow; 
             },
-            onEnter() {
-                layerDataReset("R", []);
+            onEnter() { 
+                layerDataReset("R", []); 
                 player.points = new Decimal(0);
-            }
+            },
         },
         13: {
             name: "Third Number",
@@ -443,14 +448,16 @@ addLayer("P", {
             goalDescription: "Get 5e13 Points",
             canComplete() { return player.points.gte(5e13) },
             rewardDescription: "Points x10,000",
-            unlocked() {
-                // Аналогічна логіка для 13-го челенджу
-                return hasUpgrade("R", 83) || inChallenge("P", 13) || hasChallenge("P", 13);
+            unlocked() { 
+                if (hasUpgrade("R", 83) || inChallenge("P", 13) || hasChallenge("P", 13)) {
+                    this.forceShow = true;
+                }
+                return this.forceShow;
             },
-            onEnter() {
-                layerDataReset("R", []);
+            onEnter() { 
+                layerDataReset("R", []); 
                 player.points = new Decimal(0);
-            }
+            },
         },
     layerShown() { return hasUpgrade('R', 41) || (player.P && player.P.unlocked) }
 });
