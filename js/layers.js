@@ -429,13 +429,18 @@ addLayer("P", {
             goalDescription: "Get 10,000 Rebirth Points",
             canComplete() { return player.R && player.R.points.gte(1e4) },
             rewardDescription: "RP x250",
-            unlocked() { 
-                // Видно, якщо куплено апгрейд АБО якщо ми його вже активували раніше
-                return hasUpgrade("R", 81) || player.P.challenge12Seen || hasChallenge("P", 12);
+            unlocked() {
+                // Якщо апгрейд є, або якщо ми вже зафіксували розблокування раніше
+                if (hasUpgrade("R", 81)) player.P.challenges[12] = Math.max(player.P.challenges[12] || 0, 0); 
+                
+                // Специфічний хак для TMT: перевіряємо, чи був апгрейд куплений хоча б раз
+                // Використовуємо внутрішню змінну шару, щоб "запам'ятати" стан без втручання в startData
+                if (hasUpgrade("R", 81)) this.permanentlyUnlocked = true;
+
+                return this.permanentlyUnlocked || hasChallenge("P", 12);
             },
             onEnter() {
-                player.P.challenge12Seen = true; // Фіксуємо, що гравець зайшов
-                layerDataReset("R", []); 
+                layerDataReset("R", []);
                 player.points = new Decimal(0);
             },
         },
@@ -445,17 +450,17 @@ addLayer("P", {
             goalDescription: "Get 5e13 Points",
             canComplete() { return player.points.gte(5e13) },
             rewardDescription: "Points x10,000",
-            unlocked() { 
-                // Відкрито, якщо є апгрейд АБО якщо ми вже заходили в цей челендж
-                return hasUpgrade("R", 83) || player.P.challenge13Seen || hasChallenge("P", 13);
+            unlocked() {
+                // Фіксуємо розблокування в об'єкті
+                if (hasUpgrade("R", 83)) this.permanentlyUnlocked = true;
+
+                return this.permanentlyUnlocked || hasChallenge("P", 13);
             },
-            onEnter() { 
-                player.P.challenge13Seen = true; // Фіксуємо відкриття назавжди
-                layerDataReset("R", []); 
+            onEnter() {
+                layerDataReset("R", []);
                 player.points = new Decimal(0);
             },
         },
-    },
     layerShown() { return hasUpgrade('R', 41) || (player.P && player.P.unlocked) }
 });
 
