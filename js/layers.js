@@ -81,7 +81,7 @@ addLayer("R", {
             if (player.M && hasMilestone("M", 0)) return; 
 
             // Стандартні умови збереження від Prestige Milestones
-            if (hasMilestone("P", 0)) keptUpgrades.push(11, 12, 13, 14);
+            if (hasMilestone("P", 0)) keptUpgrades.push(11, 12, 13, 14, 81, 83);
             if (hasMilestone("P", 1)) keptUpgrades.push(21, 22, 23, 24, 31, 32, 33, 34);
             if (hasMilestone("P", 4)) {
                 keptUpgrades.push(41, 42, 43, 44);
@@ -371,9 +371,7 @@ addLayer("P", {
     startData() { return {
         unlocked: false,
         points: new Decimal(0),
-        best: new Decimal(0),
-        challenge12Seen: false, // Ось цей прапорець
-        challenge13Seen: false,
+        best: new Decimal(0)
     }},
     color: "#13dc13",
     resource: "Prestige points",
@@ -430,14 +428,19 @@ addLayer("P", {
             canComplete() { return player.R && player.R.points.gte(1e4) },
             rewardDescription: "RP x250",
             unlocked() { 
-                // ТУТ ТІЛЬКИ ЧИТАЄМО: Показуємо, якщо є апгрейд, АБО ми вже заходили сюди
-                return hasUpgrade("R", 81) || player.P.challenge12Seen || hasChallenge("P", 12);
+                // МАКСИМАЛЬНО ПРОСТО: тільки апгрейд або вже пройдено
+                return hasUpgrade("R", 81) || hasChallenge("P", 12); 
             },
             onEnter() { 
-                // ТУТ ЗМІНЮЄМО: Як тільки гравець клікнув "Увійти", фіксуємо це назавжди
-                player.P.challenge12Seen = true; 
+                // Запам'ятовуємо, чи є апгрейди перед скиданням
+                let has81 = hasUpgrade("R", 81);
+                let has83 = hasUpgrade("R", 83);
+                
                 layerDataReset("R", []); 
                 player.points = new Decimal(0);
+                
+                // Повертаємо їх назад, щоб челенджі не зникли!
+                if (has81) player.R.upgrades.push(81);
             },
         },
         13: {
@@ -447,14 +450,19 @@ addLayer("P", {
             canComplete() { return player.points.gte(5e13) },
             rewardDescription: "Points x10,000",
             unlocked() { 
-                return hasUpgrade("R", 83) || player.P.challenge13Seen || hasChallenge("P", 13);
+                return hasUpgrade("R", 83) || hasChallenge("P", 13);
             },
             onEnter() { 
-                player.P.challenge13Seen = true;
+                let has83 = hasUpgrade("R", 83);
+                
                 layerDataReset("R", []); 
                 player.points = new Decimal(0);
+                
+                if (has81) player.R.upgrades.push(81);
+                if (has83) player.R.upgrades.push(83);
             },
         },
+    },
     layerShown() { return hasUpgrade('R', 41) || (player.P && player.P.unlocked) }
 });
 
