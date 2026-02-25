@@ -371,6 +371,9 @@ addLayer("P", {
     startData() { return {
         unlocked: false,
         points: new Decimal(0),
+        best: new Decimal(0),
+        challenge12Seen: false, // Ось цей прапорець
+        challenge13Seen: false,
     }},
     color: "#13dc13",
     resource: "Prestige points",
@@ -426,12 +429,12 @@ addLayer("P", {
             goalDescription: "Get 10,000 Rebirth Points",
             canComplete() { return player.R && player.R.points.gte(1e4) },
             rewardDescription: "RP x250",
-            // ДОДАНО: Перевірка на вже відкритий стан (hasChallenge) 
-            // або наявність прогресу, щоб він не зникав після ресету
             unlocked() { 
-                return hasUpgrade("R", 81) || hasChallenge("P", 12) || player.P.challenges[12] > 0; 
+                // Видно, якщо куплено апгрейд АБО якщо ми його вже активували раніше
+                return hasUpgrade("R", 81) || player.P.challenge12Seen || hasChallenge("P", 12);
             },
-            onEnter() { 
+            onEnter() {
+                player.P.challenge12Seen = true; // Фіксуємо, що гравець зайшов
                 layerDataReset("R", []); 
                 player.points = new Decimal(0);
             },
@@ -440,14 +443,14 @@ addLayer("P", {
             name: "Third Number",
             challengeDescription: "Points gain ^0.1",
             goalDescription: "Get 5e13 Points",
-            canComplete() { return player && player.points.gte(5e13) },
+            canComplete() { return player.points.gte(5e13) },
             rewardDescription: "Points x10,000",
-            // ДОДАНО: Перевірка на вже відкритий стан (hasChallenge) 
-            // або наявність прогресу, щоб він не зникав після ресету
             unlocked() { 
-                return hasUpgrade("R", 83) || hasChallenge("P", 12) || player.P.challenges[12] > 0; 
+                // Відкрито, якщо є апгрейд АБО якщо ми вже заходили в цей челендж
+                return hasUpgrade("R", 83) || player.P.challenge13Seen || hasChallenge("P", 13);
             },
             onEnter() { 
+                player.P.challenge13Seen = true; // Фіксуємо відкриття назавжди
                 layerDataReset("R", []); 
                 player.points = new Decimal(0);
             },
