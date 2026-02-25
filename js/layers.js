@@ -430,14 +430,12 @@ addLayer("P", {
             canComplete() { return player.R && player.R.points.gte(1e4) },
             rewardDescription: "RP x250",
             unlocked() { 
-                // Якщо гравець купив апгрейд, заходив у челендж або пройшов його
-                // ми створюємо "вічну" властивість прямо в цьому об'єкті
-                if (hasUpgrade("R", 81) || inChallenge("P", 12) || hasChallenge("P", 12)) {
-                    this.forceShow = true; 
-                }
-                return this.forceShow; 
+                // ТУТ ТІЛЬКИ ЧИТАЄМО: Показуємо, якщо є апгрейд, АБО ми вже заходили сюди
+                return hasUpgrade("R", 81) || player.P.challenge12Seen || hasChallenge("P", 12);
             },
             onEnter() { 
+                // ТУТ ЗМІНЮЄМО: Як тільки гравець клікнув "Увійти", фіксуємо це назавжди
+                player.P.challenge12Seen = true; 
                 layerDataReset("R", []); 
                 player.points = new Decimal(0);
             },
@@ -449,12 +447,10 @@ addLayer("P", {
             canComplete() { return player.points.gte(5e13) },
             rewardDescription: "Points x10,000",
             unlocked() { 
-                if (hasUpgrade("R", 83) || inChallenge("P", 13) || hasChallenge("P", 13)) {
-                    this.forceShow = true;
-                }
-                return this.forceShow;
+                return hasUpgrade("R", 83) || player.P.challenge13Seen || hasChallenge("P", 13);
             },
             onEnter() { 
+                player.P.challenge13Seen = true;
                 layerDataReset("R", []); 
                 player.points = new Decimal(0);
             },
